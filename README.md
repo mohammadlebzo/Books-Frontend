@@ -19,8 +19,9 @@
 
 01-01-2001 4:59pm - Application now has a fully-functional express server, with a GET route for the location resource. -->
 
-- 26-09-2021 06:00pm - The application allows the user to log in and out, also shows the info of the email.
-- 27-09-2021 05:17pm - The application receives data from the back-end and renders it.
+- **26-09-2021 06:00pm** - The application allows the user to log in and out, also shows the info of the email.
+- **27-09-2021 05:17pm** - The application receives data from the back-end and renders it.
+- **27-09-2021 05:17pm** - The application sends data to the database, also is able to delete data from it.
 
 ## Credit and Collaborations
 <!-- Give credit (and a link) to other people or resources that helped you build this application. -->

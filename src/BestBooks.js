@@ -4,6 +4,9 @@ import Jumbotron from 'react-bootstrap/Jumbotron';
 import './BestBooks.css';
 import Card from 'react-bootstrap/Card'
 import { CardGroup } from 'react-bootstrap';
+import { withAuth0 } from '@auth0/auth0-react';
+import BookFormModal from './BookFormModal';
+import Button from 'react-bootstrap/Button'
 
 import axios from 'axios';
 
@@ -12,19 +15,35 @@ class MyFavoriteBooks extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      books: []
+      books: [],
+      showModel: false,
     }
   }
 
   componentDidMount = async () => {
-    // console.log('inside componentDidMount')
-    let url = `${process.env.REACT_APP_SERVER}/books`;
-    let booksData = await axios.get(url)
+    let booksData = await axios.get(`${process.env.REACT_APP_SERVER}/getbooks`);
     this.setState({
       books: booksData.data
     })
-    console.log('Book Data', this.state.books)
   }
+
+  handleClose = () => {
+    this.setState({ showModel: false });
+  };
+
+  handleShow = () => {
+    this.setState({showModel: true});
+  };
+
+  addBook = (info) => {
+    this.setState({books: info})
+  };
+
+  deleteBook = async (bookID) => {
+    // console.log(bookID);
+    let delURL = await axios.delete(`${process.env.REACT_APP_SERVER}/deleteBook?bookID=${bookID}`);
+    this.setState({books: delURL.data})
+  };
 
   render() {
     return (
@@ -33,6 +52,8 @@ class MyFavoriteBooks extends React.Component {
         <p>
           This is a collection of my favorite books
         </p>
+        <button onClick={this.handleShow}>AddBook</button>
+        {this.state.showModel && <BookFormModal showModel={this.state.showModel} close={this.handleClose} addBook={this.addBook.bind(this)} />}
         {this.state.books && <CardGroup>
           {this.state.books.map(item => {
             return (
@@ -41,6 +62,7 @@ class MyFavoriteBooks extends React.Component {
                   <Card.Title>{item.title}</Card.Title>
                   <Card.Text>{item.description}</Card.Text>
                   <Card.Text>{item.status}</Card.Text>
+                  <Button variant="danger" onClick={() => {this.deleteBook(item._id)}}>Delete</Button>
                 </Card.Body>
               </Card>
             )
@@ -51,6 +73,6 @@ class MyFavoriteBooks extends React.Component {
   }
 }
 
-export default MyFavoriteBooks;
+export default withAuth0(MyFavoriteBooks);
 
 {/* <Card.Img variant="top" src="holder.js/100px160" />  */ }
