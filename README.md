@@ -21,7 +21,8 @@
 
 - **26-09-2021 06:00pm** - The application allows the user to log in and out, also shows the info of the email.
 - **27-09-2021 05:17pm** - The application receives data from the back-end and renders it.
-- **27-09-2021 05:17pm** - The application sends data to the database, also is able to delete data from it.
+- **28-09-2021 07:37pm** - The application sends data to the database, also is able to delete data from it.
+- **29-09-2021 02:03pm** - The application sends data to the database, also is able to update data from it.
 
 ## Credit and Collaborations
 <!-- Give credit (and a link) to other people or resources that helped you build this application. -->
