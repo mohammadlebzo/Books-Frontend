@@ -18,7 +18,8 @@ class MyFavoriteBooks extends React.Component {
     this.state = {
       books: [],
       showModel: false,
-      showModelUpdate: false
+      showModelUpdate: false,
+      bookInfo: {}
     }
   }
 
@@ -40,8 +41,11 @@ class MyFavoriteBooks extends React.Component {
     this.setState({ showModel: true });
   };
 
-  handleShowUpdate = () => {
-    this.setState({ showModelUpdate: true });
+  handleShowUpdate = (book) => {
+    this.setState({ 
+      showModelUpdate: true,
+      bookInfo: book
+    });
   };
 
   addBook = (info) => {
@@ -83,7 +87,7 @@ class MyFavoriteBooks extends React.Component {
                     <Card.Text>{item.description}</Card.Text>
                     <Card.Text>{item.status}</Card.Text>
                     <Button variant="danger" onClick={() => { this.deleteBook(item._id) }}>Delete</Button>
-                    <Button variant="secondary" onClick={this.handleShowUpdate}>Update</Button>
+                    <Button variant="secondary" onClick={() => {this.handleShowUpdate(item)}}>Update</Button>
                   </Card.Body>
                 </Card>
                 {this.state.showModelUpdate &&
@@ -91,7 +95,7 @@ class MyFavoriteBooks extends React.Component {
                     showModel={this.state.showModelUpdate}
                     close={this.handleCloseUpdate}
                     updateBook={this.updateBook.bind(this)}
-                    bookData={item}
+                    bookData={this.state.bookInfo}
                   />
                 }
               </>
