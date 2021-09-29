@@ -30,7 +30,7 @@ class BookFormModal extends React.Component {
             <>
                 <Modal show={this.props.showModel} onHide={this.props.close}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Modal heading</Modal.Title>
+                        <Modal.Title>Add Book</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <Form onSubmit={this.submitBookInfo.bind(this)}>
