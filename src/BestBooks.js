@@ -6,6 +6,7 @@ import Card from 'react-bootstrap/Card'
 import { CardGroup } from 'react-bootstrap';
 import { withAuth0 } from '@auth0/auth0-react';
 import BookFormModal from './BookFormModal';
+import UpdateBookFormModel from './UpdateBookFormModel';
 import Button from 'react-bootstrap/Button'
 
 import axios from 'axios';
@@ -17,6 +18,7 @@ class MyFavoriteBooks extends React.Component {
     this.state = {
       books: [],
       showModel: false,
+      showModelUpdate: false
     }
   }
 
@@ -30,19 +32,30 @@ class MyFavoriteBooks extends React.Component {
   handleClose = () => {
     this.setState({ showModel: false });
   };
+  handleCloseUpdate = () => {
+    this.setState({ showModelUpdate: false });
+  };
 
   handleShow = () => {
-    this.setState({showModel: true});
+    this.setState({ showModel: true });
+  };
+
+  handleShowUpdate = () => {
+    this.setState({ showModelUpdate: true });
   };
 
   addBook = (info) => {
-    this.setState({books: info})
+    this.setState({ books: info })
+  };
+
+  updateBook = (info) => {
+    this.setState({ books: info })
   };
 
   deleteBook = async (bookID) => {
     // console.log(bookID);
     let delURL = await axios.delete(`${process.env.REACT_APP_SERVER}/deleteBook?bookID=${bookID}`);
-    this.setState({books: delURL.data})
+    this.setState({ books: delURL.data })
   };
 
   render() {
@@ -53,18 +66,35 @@ class MyFavoriteBooks extends React.Component {
           This is a collection of my favorite books
         </p>
         <button onClick={this.handleShow}>AddBook</button>
-        {this.state.showModel && <BookFormModal showModel={this.state.showModel} close={this.handleClose} addBook={this.addBook.bind(this)} />}
+        {this.state.showModel &&
+          <BookFormModal
+            showModel={this.state.showModel}
+            close={this.handleClose}
+            addBook={this.addBook.bind(this)}
+          />
+        }
         {this.state.books && <CardGroup>
           {this.state.books.map(item => {
             return (
-              <Card>
-                <Card.Body>
-                  <Card.Title>{item.title}</Card.Title>
-                  <Card.Text>{item.description}</Card.Text>
-                  <Card.Text>{item.status}</Card.Text>
-                  <Button variant="danger" onClick={() => {this.deleteBook(item._id)}}>Delete</Button>
-                </Card.Body>
-              </Card>
+              <>
+                <Card>
+                  <Card.Body>
+                    <Card.Title>{item.title}</Card.Title>
+                    <Card.Text>{item.description}</Card.Text>
+                    <Card.Text>{item.status}</Card.Text>
+                    <Button variant="danger" onClick={() => { this.deleteBook(item._id) }}>Delete</Button>
+                    <Button variant="secondary" onClick={this.handleShowUpdate}>Update</Button>
+                  </Card.Body>
+                </Card>
+                {this.state.showModelUpdate &&
+                  <UpdateBookFormModel
+                    showModel={this.state.showModelUpdate}
+                    close={this.handleCloseUpdate}
+                    updateBook={this.updateBook.bind(this)}
+                    bookData={item}
+                  />
+                }
+              </>
             )
           })}
         </CardGroup>}
